@@ -1,0 +1,605 @@
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Banana The Melting - Sensasi pisang lumer renyah dengan saus manis dan topping melimpah." />
+  <title>Banana The Melting | Pisang Lumer</title>
+
+  <style>
+    :root{
+      --brown:#3b2118;
+      --brown-2:#5a3020;
+      --cream:#fff8e9;
+      --yellow:#ffc94a;
+      --orange:#f47c20;
+      --orange-2:#ff9d3c;
+      --white:#ffffff;
+      --muted:#755f54;
+      --shadow:0 18px 45px rgba(65,34,20,.13);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color:var(--brown);
+      background:var(--cream);
+      line-height:1.6;
+    }
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+
+    /* NAVBAR */
+    .navbar{
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(255,248,233,.92);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(59,33,24,.08);
+    }
+    .nav-inner{
+      max-width:1150px;
+      margin:auto;
+      padding:14px 22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      font-size:1.15rem;
+    }
+    .logo-mark{
+      width:42px;height:42px;
+      display:grid;place-items:center;
+      background:var(--yellow);
+      border-radius:50% 45% 55% 40%;
+      transform:rotate(-8deg);
+      box-shadow:0 7px 0 #e89b22;
+    }
+    .nav-links{
+      display:flex;
+      gap:25px;
+      font-weight:700;
+      color:var(--brown-2);
+    }
+    .nav-links a:hover{color:var(--orange)}
+    .nav-btn{
+      background:var(--brown);
+      color:white;
+      padding:10px 17px;
+      border-radius:999px;
+      font-weight:800;
+    }
+
+    /* HERO */
+    .hero{
+      min-height:650px;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+      position:relative;
+      background:
+        radial-gradient(circle at 90% 15%, rgba(255,201,74,.42) 0 100px, transparent 101px),
+        radial-gradient(circle at 8% 85%, rgba(244,124,32,.13) 0 150px, transparent 151px),
+        var(--cream);
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      width:420px;height:420px;
+      border-radius:50%;
+      background:var(--yellow);
+      right:-140px;top:100px;
+      opacity:.45;
+    }
+    .hero-inner{
+      width:min(1150px,92%);
+      margin:auto;
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:45px;
+      align-items:center;
+      position:relative;
+      z-index:1;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      background:#fff;
+      padding:8px 14px;
+      border-radius:999px;
+      box-shadow:0 8px 20px rgba(59,33,24,.08);
+      font-weight:800;
+      color:var(--orange);
+      margin-bottom:17px;
+    }
+    h1{
+      font-size:clamp(3rem,7vw,5.8rem);
+      line-height:.95;
+      letter-spacing:-4px;
+      margin-bottom:20px;
+    }
+    h1 span{color:var(--orange)}
+    .hero-text{
+      font-size:1.12rem;
+      max-width:580px;
+      color:var(--muted);
+      margin-bottom:28px;
+    }
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:14px 22px;
+      border-radius:999px;
+      font-weight:900;
+      transition:.2s;
+    }
+    .btn:hover{transform:translateY(-3px)}
+    .btn-primary{background:var(--orange);color:#fff;box-shadow:0 10px 25px rgba(244,124,32,.25)}
+    .btn-secondary{background:#fff;border:2px solid #f2dfc9}
+
+    .food-card{
+      min-height:440px;
+      position:relative;
+      display:grid;
+      place-items:center;
+    }
+    .food-circle{
+      width:min(420px,80vw);
+      aspect-ratio:1;
+      border-radius:50%;
+      background:linear-gradient(145deg,#ffd96a,#f5a72d);
+      box-shadow:0 30px 70px rgba(132,72,25,.25);
+      display:grid;
+      place-items:center;
+      transform:rotate(4deg);
+    }
+    .banana-art{
+      width:78%;
+      height:78%;
+      border-radius:42% 58% 50% 50%;
+      background:#f8c548;
+      position:relative;
+      transform:rotate(-10deg);
+      box-shadow:inset -18px -18px 0 rgba(190,116,22,.16);
+      border:10px solid #fff4cf;
+    }
+    .banana-art::before{
+      content:"";
+      position:absolute;
+      width:78%;
+      height:25%;
+      left:12%;
+      top:38%;
+      border-radius:50%;
+      background:#fff7e8;
+      box-shadow:0 10px 0 #fff0d0;
+    }
+    .drip{
+      position:absolute;
+      z-index:3;
+      background:var(--orange);
+      width:72px;height:72px;
+      border-radius:50%;
+      box-shadow:inset 0 -8px 0 rgba(130,55,15,.15);
+    }
+    .drip:nth-child(1){top:13%;right:8%}
+    .drip:nth-child(2){bottom:14%;left:8%;background:#7c452a}
+    .drip:nth-child(3){bottom:6%;right:23%;background:#fff}
+    .spark{
+      position:absolute;
+      font-size:2rem;
+      animation:float 3s ease-in-out infinite;
+    }
+    .s1{top:8%;left:5%}.s2{right:3%;bottom:10%;animation-delay:.7s}.s3{left:2%;bottom:18%;animation-delay:1.3s}
+    @keyframes float{50%{transform:translateY(-10px) rotate(8deg)}}
+
+    /* SECTION */
+    section{padding:85px 20px}
+    .section-inner{width:min(1100px,94%);margin:auto}
+    .section-head{text-align:center;max-width:700px;margin:0 auto 45px}
+    .section-head .tag{
+      color:var(--orange);
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:1.5px;
+      font-size:.82rem;
+    }
+    .section-head h2{
+      font-size:clamp(2rem,5vw,3.2rem);
+      line-height:1.05;
+      margin:8px 0 13px;
+    }
+    .section-head p{color:var(--muted)}
+
+    /* FEATURES */
+    .features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
+    .feature{
+      background:#fff;
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(59,33,24,.06);
+      transition:.2s;
+    }
+    .feature:hover{transform:translateY(-6px)}
+    .icon{
+      width:58px;height:58px;
+      display:grid;place-items:center;
+      border-radius:18px;
+      background:#fff1c6;
+      font-size:1.7rem;
+      margin-bottom:15px;
+    }
+    .feature h3{margin-bottom:5px}
+    .feature p{color:var(--muted)}
+
+    /* ABOUT */
+    .about{
+      background:var(--brown);
+      color:#fff;
+      position:relative;
+      overflow:hidden;
+    }
+    .about::after{
+      content:"🍌";
+      position:absolute;
+      font-size:16rem;
+      right:-40px;
+      bottom:-80px;
+      opacity:.08;
+      transform:rotate(-15deg);
+    }
+    .about-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:45px;
+      align-items:center;
+    }
+    .about p{color:#eadbd2}
+    .about h2{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:10px 0 18px}
+    .check-list{list-style:none;margin-top:22px;display:grid;gap:12px}
+    .check-list li{display:flex;gap:10px;align-items:flex-start}
+    .check-list span{
+      background:var(--yellow);
+      color:var(--brown);
+      width:25px;height:25px;
+      display:grid;place-items:center;
+      border-radius:50%;
+      flex:0 0 auto;
+      font-weight:900;
+    }
+    .quote{
+      background:#fff;
+      color:var(--brown);
+      padding:30px;
+      border-radius:28px;
+      box-shadow:0 20px 50px rgba(0,0,0,.18);
+      transform:rotate(2deg);
+    }
+    .quote strong{display:block;font-size:1.35rem;line-height:1.2;margin-top:10px}
+
+    /* TARGET */
+    .target-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
+    .target{
+      padding:30px;
+      border-radius:24px;
+      background:#fff;
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+    .target .big{font-size:2.6rem;margin-bottom:8px}
+    .target h3{margin-bottom:5px}
+    .target p{color:var(--muted)}
+
+    /* TEAM */
+    .team{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
+    .member{
+      background:#fff;
+      padding:28px;
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+    .avatar{
+      width:78px;height:78px;
+      border-radius:50%;
+      margin:0 auto 14px;
+      display:grid;place-items:center;
+      font-size:2rem;
+      background:linear-gradient(135deg,#ffd96a,#ff9d3c);
+    }
+    .role{font-size:.85rem;color:var(--orange);font-weight:900;margin:4px 0 10px}
+    .member p{color:var(--muted);font-size:.94rem}
+
+    /* CTA */
+    .cta{
+      padding:30px;
+      border-radius:32px;
+      background:linear-gradient(135deg,var(--orange),#ffb447);
+      color:#fff;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:25px;
+      box-shadow:var(--shadow);
+    }
+    .cta h2{font-size:clamp(1.8rem,4vw,3rem);line-height:1}
+    .cta p{margin-top:7px;color:#fff8ec}
+    .cta .btn{background:#fff;color:var(--brown)}
+
+    footer{
+      background:#2a1711;
+      color:#d9c7bc;
+      text-align:center;
+      padding:28px 20px;
+      font-size:.9rem;
+    }
+    footer strong{color:#fff}
+
+    @media(max-width:800px){
+      .nav-links{display:none}
+      .hero{min-height:auto;padding:70px 0}
+      .hero-inner,.about-grid{grid-template-columns:1fr}
+      .food-card{min-height:350px}
+      .features,.target-grid,.team{grid-template-columns:1fr}
+      section{padding:65px 18px}
+      .cta{flex-direction:column;text-align:center}
+      h1{letter-spacing:-2px}
+    }
+    @media(max-width:480px){
+      .nav-btn{padding:8px 12px;font-size:.85rem}
+      .hero-inner{width:90%}
+      .food-card{min-height:300px}
+      .food-circle{width:300px}
+      .banana-art{border-width:7px}
+      .drip{width:50px;height:50px}
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="#home">
+        <span class="logo-mark">🍌</span>
+        <span>Banana The Melting</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#tentang">Tentang</a>
+        <a href="#keunggulan">Keunggulan</a>
+        <a href="#target">Target</a>
+        <a href="#tim">Tim</a>
+      </div>
+
+      <a class="nav-btn" href="#pesan">Yuk, Cobain! 🍫</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="hero" id="home">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">🍌 Jajanan Kekinian • Ramah Kantong</div>
+          <h1>Banana <span>The Melting</span></h1>
+          <p class="hero-text">
+            Sensasi kelezatan pisang lumer renyah dengan ragam varian saus
+            manis dan topping melimpah. Cocok buat ngemil santai, kumpul,
+            atau sekadar memanjakan lidah.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#pesan">🍫 Lihat Penawaran</a>
+            <a class="btn btn-secondary" href="#tentang">Kenalan Dulu →</a>
+          </div>
+        </div>
+
+        <div class="food-card" aria-label="Ilustrasi pisang lumer">
+          <span class="spark s1">✨</span>
+          <span class="spark s2">🍫</span>
+          <span class="spark s3">⭐</span>
+          <div class="food-circle">
+            <div class="banana-art">
+              <div class="drip"></div>
+              <div class="drip"></div>
+              <div class="drip"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="keunggulan">
+      <div class="section-inner">
+        <div class="section-head">
+          <div class="tag">Kenapa Banana The Melting?</div>
+          <h2>Renyah di luar, lumer di dalam. 🤎</h2>
+          <p>
+            Dibuat untuk menjadi jajanan sederhana yang punya rasa,
+            tekstur, dan pengalaman ngemil yang berkesan.
+          </p>
+        </div>
+
+        <div class="features">
+          <article class="feature">
+            <div class="icon">🥨</div>
+            <h3>Renyah & Lumer</h3>
+            <p>Pisang pilihan dibalut kulit lumpia renyah lalu dipadukan dengan lelehan saus manis.</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">🍫</div>
+            <h3>Saus & Topping</h3>
+            <p>Aneka saus manis dan topping melimpah untuk memberikan banyak pilihan rasa.</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">👨‍👩‍👧‍👦</div>
+            <h3>Cocok untuk Semua</h3>
+            <p>Konsep jajanan yang cocok dinikmati pelajar, mahasiswa, maupun masyarakat umum.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="tentang">
+      <div class="section-inner about-grid">
+        <div>
+          <div class="tag" style="color:#ffd96a;font-weight:900">Tentang Usaha</div>
+          <h2>Jajanan kecil dengan cita rasa yang ingin terus dikembangkan.</h2>
+          <p>
+            Banana The Melting adalah usaha jajanan kekinian yang mengolah
+            pisang pilihan berbalut kulit lumpia renyah, disajikan dengan
+            lelehan saus manis serta aneka topping melimpah.
+          </p>
+
+          <ul class="check-list">
+            <li><span>✓</span> Bahan baku premium dan berkualitas</li>
+            <li><span>✓</span> Menjaga kebersihan dan konsistensi rasa</li>
+            <li><span>✓</span> Harga terjangkau untuk pelajar & mahasiswa</li>
+            <li><span>✓</span> Pelayanan ramah dan memuaskan</li>
+            <li><span>✓</span> Terus mengembangkan skala usaha</li>
+          </ul>
+        </div>
+
+        <div class="quote">
+          <span style="font-size:2rem">🍌✨</span>
+          <p>Visi utama kami:</p>
+          <strong>
+            “Menjadi usaha Banana The Melting yang dikenal luas karena
+            varian rasa yang beragam, harga terjangkau, serta kualitas
+            rasa yang konsisten terjaga.”
+          </strong>
+        </div>
+      </div>
+    </section>
+
+    <section id="target">
+      <div class="section-inner">
+        <div class="section-head">
+          <div class="tag">Fokus Pasar</div>
+          <h2>Tempat nongkrongnya para pencinta jajanan manis.</h2>
+          <p>
+            Lokasi usaha diarahkan ke area sekitar kampus, sekolah,
+            dan pusat keramaian yang mudah diakses.
+          </p>
+        </div>
+
+        <div class="target-grid">
+          <article class="target">
+            <div class="big">🎓</div>
+            <h3>Pelajar</h3>
+            <p>Jajanan praktis dengan harga yang ramah kantong.</p>
+          </article>
+
+          <article class="target">
+            <div class="big">💻</div>
+            <h3>Mahasiswa</h3>
+            <p>Cocok menemani waktu santai, belajar, dan kumpul.</p>
+          </article>
+
+          <article class="target">
+            <div class="big">👨‍👩‍👧</div>
+            <h3>Masyarakat Umum</h3>
+            <p>Untuk siapa saja yang suka makanan manis dan renyah.</p>
+          </article>
+        </div>
+
+        <div style="margin-top:28px;text-align:center;color:var(--muted)">
+          <strong>Modal awal:</strong> Rp 150.000 &nbsp;•&nbsp;
+          <strong>Konsep:</strong> Investasi efisien dengan potensi imbal hasil optimal
+        </div>
+      </div>
+    </section>
+
+    <section id="tim" style="background:#fff4dd">
+      <div class="section-inner">
+        <div class="section-head">
+          <div class="tag">Manajemen Tim</div>
+          <h2>Tiga orang, satu tujuan. 🍌</h2>
+          <p>Setiap anggota punya peran untuk menjaga usaha tetap berjalan.</p>
+        </div>
+
+        <div class="team">
+          <article class="member">
+            <div class="avatar">👑</div>
+            <h3>Muhammad Galang</h3>
+            <div class="role">PEMILIK / KETUA</div>
+            <p>Bertanggung jawab mengatur seluruh kegiatan operasional dan mengawasi jalannya usaha.</p>
+          </article>
+
+          <article class="member">
+            <div class="avatar">💰</div>
+            <h3>Fauzi Zahi</h3>
+            <div class="role">KEUANGAN</div>
+            <p>Mengelola pencatatan modal, mengontrol pengeluaran harian, dan menghitung porsi keuntungan.</p>
+          </article>
+
+          <article class="member">
+            <div class="avatar">👨‍🍳</div>
+            <h3>Fatih Al Ghazi</h3>
+            <div class="role">PRODUKSI & PENJUALAN</div>
+            <p>Membuat produk pisang cokelat, mengemas dengan rapi, serta melayani penjualan konsumen.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="pesan">
+      <div class="section-inner">
+        <div class="cta">
+          <div>
+            <h2>Siap merasakan sensasi lumer? 🍌</h2>
+            <p>Banana The Melting • “Sensasi Lumer yang Bikin Nagih di Setiap Gigitan”</p>
+          </div>
+          <a class="btn" href="https://wa.me/6280000000000" target="_blank" rel="noopener">
+            💬 Pesan Sekarang
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <strong>Banana The Melting</strong> • Galang | Fauzi | Fatih
+    <br>
+    <span>© 2026 Banana The Melting. Dibuat dengan rasa pisang dan sedikit cinta pada desain. 🍌</span>
+  </footer>
+
+</body>
+</html>
+'''
+
+path = Path("/mnt/data/index.html")
+path.write_text(html, encoding="utf-8")
+print(f"File berhasil dibuat: {path}")
